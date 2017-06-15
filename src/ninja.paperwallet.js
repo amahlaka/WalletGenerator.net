@@ -93,10 +93,10 @@ ninja.wallets.paperwallet = {
 			ninja.wallets.paperwallet.showArtisticWallet(idPostFix, bitcoinAddress, privateKeyWif);
 		}
 	},
-	
+
 	// Verify that a self-entered key is valid, and compute the corresponding
 	// public address, render the wallet.
-	testAndApplyVanityKey: function () { 
+	testAndApplyVanityKey: function () {
 		var suppliedKey = document.getElementById('suppliedPrivateKey').value;
 		suppliedKey = suppliedKey.trim(); // in case any spaces or whitespace got pasted in
 		document.getElementById('suppliedPrivateKey').value = suppliedKey;
@@ -130,8 +130,34 @@ ninja.wallets.paperwallet = {
 								"<div id='qrcode_private" + i + "' class='qrcode_private'></div>" +
 								"<div class='btcaddress' id='btcaddress" + i + "'></div>" +
 								"<div class='" + keyelement + "' id='" + keyelement + i + "'></div>" +
+								"<div class='paperWalletText'><img id='backLogo' class='backLogo' src='" + coinImgUrl + "' alt='currency_logo' />" + ninja.translator.get("paperwalletback") + "</div>" +
+							"</div>";
+		return walletHtml;
+	},
+	manualWallet: function (currency,i,idPostFix, bitcoinAddress, privateKey) {
+		var keyelement = 'btcprivwif';
+		var coinImgUrl = "logos/" + currency.toLowerCase() + ".png";
+		var walletBackgroundUrl = "wallets/" +currency.toLowerCase() + ".png";
+
+		var walletHtml =
+							"<div class='coinIcoin'> <img id='coinImg' src='" + coinImgUrl + "' alt='currency_logo' /></div><div class='artwallet' id='artwallet" + i + "'>" +
+								"<img id='papersvg" + i + "' class='papersvg' src='" + walletBackgroundUrl + "' />" +
+								"<div id='qrcode_public" + i + "' class='qrcode_public'></div>" +
+								"<div id='qrcode_private" + i + "' class='qrcode_private'></div>" +
+								"<div class='btcaddress' id='btcaddress" + i + "'></div>" +
+								"<div class='" + keyelement + "' id='" + keyelement + i + "'></div>" +
 								"<div class='paperWalletText'><img class='backLogo' src='" + coinImgUrl + "' alt='currency_logo' />" + ninja.translator.get("paperwalletback") + "</div>" +
 							"</div>";
+							var keyValuePair = {};
+							keyValuePair["qrcode_public" + idPostFix] = bitcoinAddress;
+							ninja.qrCode.showQrCode(keyValuePair, 3.5);
+
+					        var keyValuePair = {};
+					        keyValuePair["qrcode_private" + idPostFix] = privateKey;
+					        ninja.qrCode.showQrCode(keyValuePair, 2.8);
+
+					        document.getElementById("btcaddress" + idPostFix).innerHTML = bitcoinAddress;
+							document.getElementById("btcprivwif" + idPostFix).innerHTML = privateKey;
 		return walletHtml;
 	},
 
@@ -139,11 +165,11 @@ ninja.wallets.paperwallet = {
 		var keyValuePair = {};
 		keyValuePair["qrcode_public" + idPostFix] = bitcoinAddress;
 		ninja.qrCode.showQrCode(keyValuePair, 3.5);
-		
+
         var keyValuePair = {};
         keyValuePair["qrcode_private" + idPostFix] = privateKey;
         ninja.qrCode.showQrCode(keyValuePair, 2.8);
-        
+
         document.getElementById("btcaddress" + idPostFix).innerHTML = bitcoinAddress;
 		document.getElementById("btcprivwif" + idPostFix).innerHTML = privateKey;
 	},
